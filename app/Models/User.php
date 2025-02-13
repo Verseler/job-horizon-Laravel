@@ -18,7 +18,10 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'middle_name',
+        'last_name',
+        'role',
         'email',
         'password',
     ];
@@ -44,5 +47,20 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function jobListings()
+    {
+        $this->hasMany(JobListing::class, 'recruiter_id');
+    }
+
+    public function bookmarks()
+    {
+        $this->belongsToMany(JobBookmark::class, 'job_bookmarks', 'user_Id', 'job_listing_id')->withTimestamps();
+    }
+
+    public function bookmarkedJobs()
+    {
+        return $this->belongsToMany(JobListing::class, 'job_bookmarks', 'job_seeker_id', 'job_listing_id')->withTimestamps();
     }
 }

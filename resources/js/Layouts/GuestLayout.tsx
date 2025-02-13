@@ -1,19 +1,46 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
-import { Link } from '@inertiajs/react';
+import { Button } from '@/Components/UI/Button';
+import CenterContainer from '@/Components/UI/CenterContainer';
+import { Link, usePage } from '@inertiajs/react';
 import { PropsWithChildren } from 'react';
 
-export default function Guest({ children }: PropsWithChildren) {
-    return (
-        <div className="flex min-h-screen flex-col items-center bg-gray-100 pt-6 sm:justify-center sm:pt-0">
-            <div>
-                <Link href="/">
-                    <ApplicationLogo className="h-20 w-20 fill-current text-gray-500" />
-                </Link>
-            </div>
+export default function GuestLayout({ children }: PropsWithChildren) {
+    const auth = usePage().props.auth;
 
-            <div className="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg">
-                {children}
-            </div>
+    return (
+        <div className="min-h-screen bg-neutral-900">
+            <CenterContainer>
+                <header className="flex items-center justify-between py-4">
+                    <Link href="/">
+                        <ApplicationLogo />
+                    </Link>
+
+                    {auth.user ? (
+                        <Link href={route('dashboard')}>
+                            <Button className="bg-green-700 text-sm font-normal hover:bg-green-600">
+                                Dashboard
+                            </Button>
+                        </Link>
+                    ) : (
+                        <div className="space-x-2 text-white">
+                            <Link href={route('login')}>
+                                <Button
+                                    variant="ghost"
+                                    className="text-sm font-normal hover:bg-neutral-700 hover:text-white"
+                                >
+                                    Sign In
+                                </Button>
+                            </Link>
+                            <Link href={route('register')}>
+                                <Button className="bg-green-700 text-sm font-normal hover:bg-green-600">
+                                    Sign Up
+                                </Button>
+                            </Link>
+                        </div>
+                    )}
+                </header>
+            </CenterContainer>
+            {children}
         </div>
     );
 }
