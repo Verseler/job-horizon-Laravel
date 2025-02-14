@@ -21,7 +21,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 //Job Seeker
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/jobs/find', [JobListingController::class, 'findJobs'])->name('job.find');
+    Route::get('/jobs', [JobListingController::class, 'index'])->name('job.list');
     Route::post('/jobs/{id}/bookmark', [JobListingController::class, 'bookmark'])->name('job.bookmark');
     Route::delete('/jobs/{id}/bookmark', [JobListingController::class, 'unBookmark'])->name('job.unBookmark');
 });

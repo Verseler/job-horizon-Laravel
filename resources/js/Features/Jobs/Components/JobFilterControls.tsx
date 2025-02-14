@@ -13,7 +13,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/Components/UI/Select';
-import { Slider } from '@/Components/UI/Slider';
 import { capitalize } from '@/Lib/utils';
 import { useForm } from '@inertiajs/react';
 import { FormEvent } from 'react';
@@ -23,31 +22,29 @@ const MIN_SALARY = 0;
 const MAX_SALARY = 1_000_000;
 
 export default function JobFilterControls() {
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const { data, setData, get, processing, reset } = useForm({
         date_posted: '',
-        job_type: [''],
-        location_type: [''],
+        job_type: [],
+        location_type: [],
         salary_type: 'monthly',
         min_salary: MIN_SALARY,
         max_salary: MAX_SALARY,
     });
 
     function handleClearFilter() {
-        reset(
-            'date_posted',
-            'job_type',
-            'location_type',
-            'salary_type',
-            'max_salary',
-            'min_salary',
-        );
+        reset();
+
+        get(route('job.list'), { preserveState: true });
     }
 
     function handleSubmitJobFilter(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
-        //TODO:
-        post(route('job.filter'));
+        get(route('job.list'), {
+            preserveState: true,
+            replace: true,
+            only: ['jobs'],
+        });
     }
 
     return (
@@ -68,7 +65,7 @@ export default function JobFilterControls() {
             </div>
 
             <div className="p-4 pb-7">
-                <div className="space-y-1.5">
+                <section className="space-y-1.5">
                     <h2 className="text-sm font-medium">Date Posted</h2>
                     <Select
                         value={data.date_posted}
@@ -95,10 +92,10 @@ export default function JobFilterControls() {
                             </SelectGroup>
                         </SelectContent>
                     </Select>
-                </div>
+                </section>
 
                 <Separator className="mb-5 mt-7" />
-                <div className="space-y-1.5">
+                <section className="space-y-1.5">
                     <h2 className="text-sm font-medium">Job Type</h2>
                     <div className="grid grid-cols-2 gap-y-1">
                         <JobFilterControlsCheckbox
@@ -132,10 +129,10 @@ export default function JobFilterControls() {
                             setValue={setData}
                         />
                     </div>
-                </div>
+                </section>
 
                 <Separator className="mb-5 mt-7" />
-                <div className="space-y-3">
+                <section className="space-y-3">
                     <h2 className="text-sm font-medium">Range Salary</h2>
                     <RadioGroup
                         className="grid grid-cols-2 gap-1.5"
@@ -148,7 +145,7 @@ export default function JobFilterControls() {
                             'weekly',
                             'semi-monthly',
                             'monthly',
-                            'fixed',
+                            'onetime-payment',
                         ].map((option) => {
                             const optionLabel = capitalize(option);
 
@@ -174,28 +171,16 @@ export default function JobFilterControls() {
 
                     <div>
                         <div className="mt-5">
-                            {data.salary_type === 'fixed' ? (
-                                <Slider
-                                    value={[data.min_salary]}
-                                    onValueChange={(value) =>
-                                        setData('min_salary', value[0])
-                                    }
-                                    step={1}
-                                    min={MIN_SALARY}
-                                    max={MAX_SALARY}
-                                />
-                            ) : (
-                                <DualRangeSlider
-                                    value={[data.min_salary, data.max_salary]}
-                                    onValueChange={(value) => {
-                                        setData('min_salary', value[0]);
-                                        setData('max_salary', value[1]);
-                                    }}
-                                    step={1}
-                                    min={MIN_SALARY}
-                                    max={MAX_SALARY}
-                                />
-                            )}
+                            <DualRangeSlider
+                                value={[data.min_salary, data.max_salary]}
+                                onValueChange={(value) => {
+                                    setData('min_salary', value[0]);
+                                    setData('max_salary', value[1]);
+                                }}
+                                step={1}
+                                min={MIN_SALARY}
+                                max={MAX_SALARY}
+                            />
 
                             <div className="mt-3 flex justify-between text-neutral-500">
                                 <div className="relative flex items-center">
@@ -221,38 +206,36 @@ export default function JobFilterControls() {
                                         }
                                     />
                                 </div>
-                                {data.salary_type !== 'fixed' && (
-                                    <div className="relative flex items-center">
-                                        <Label
-                                            htmlFor="max-salary"
-                                            className="absolute border-e border-neutral-500 px-2 text-xs"
-                                        >
-                                            MAX
-                                        </Label>
-                                        <Input
-                                            type="number"
-                                            inputMode="numeric"
-                                            id="max_salary"
-                                            className="w-[7.5rem] pe-2 ps-[3.2rem] text-xs [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                                            value={data.max_salary}
-                                            min={MIN_SALARY}
-                                            max={MAX_SALARY}
-                                            onChange={(e) =>
-                                                setData(
-                                                    'max_salary',
-                                                    Number(e.target.value),
-                                                )
-                                            }
-                                        />
-                                    </div>
-                                )}
+                                <div className="relative flex items-center">
+                                    <Label
+                                        htmlFor="max-salary"
+                                        className="absolute border-e border-neutral-500 px-2 text-xs"
+                                    >
+                                        MAX
+                                    </Label>
+                                    <Input
+                                        type="number"
+                                        inputMode="numeric"
+                                        id="max_salary"
+                                        className="w-[7.5rem] pe-2 ps-[3.2rem] text-xs [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                                        value={data.max_salary}
+                                        min={MIN_SALARY}
+                                        max={MAX_SALARY}
+                                        onChange={(e) =>
+                                            setData(
+                                                'max_salary',
+                                                Number(e.target.value),
+                                            )
+                                        }
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </section>
 
                 <Separator className="mb-5 mt-7" />
-                <div className="space-y-1.5">
+                <section className="space-y-1.5">
                     <h2 className="text-sm font-medium">Location Type</h2>
                     <div className="grid grid-cols-2 gap-y-1">
                         <JobFilterControlsCheckbox
@@ -274,7 +257,7 @@ export default function JobFilterControls() {
                             setValue={setData}
                         />
                     </div>
-                </div>
+                </section>
 
                 <Separator className="mb-5 mt-7" />
                 <Button

@@ -11,27 +11,22 @@ type JobSearchBoxProps = {
 };
 
 function JobSearchBox({ className }: JobSearchBoxProps) {
-    const { data, setData, processing, reset } = useForm({
+    const { data, setData, get, processing, reset } = useForm({
         search: '',
     });
 
     function clearSearch() {
-        reset('search');
+        reset();
     }
-
-    const clearButton = data.search.length > 0 && (
-        <Button
-            onClick={clearSearch}
-            variant="link"
-            size="icon"
-            className="absolute right-0 top-0 text-neutral-500"
-        >
-            <X />
-        </Button>
-    );
 
     function handleSearchSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
+
+        get(route('job.list'), {
+            preserveState: true,
+            replace: true,
+            only: ['jobs'],
+        });
     }
 
     return (
@@ -49,7 +44,17 @@ function JobSearchBox({ className }: JobSearchBoxProps) {
                     onChange={(e) => setData('search', e.target.value)}
                     className="pe-8 shadow-none placeholder:text-xs placeholder:text-neutral-400"
                 />
-                {clearButton}
+                {data.search.length > 0 && (
+                    <Button
+                        onClick={clearSearch}
+                        variant="link"
+                        size="icon"
+                        type="button"
+                        className="absolute right-0 top-0 text-neutral-500"
+                    >
+                        <X />
+                    </Button>
+                )}
             </div>
 
             <Button
