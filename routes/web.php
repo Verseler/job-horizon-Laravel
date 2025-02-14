@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\JobListingController;
 use App\Http\Controllers\ProfileController;
+use App\Models\JobListing;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -21,7 +22,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 //Job Seeker
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/jobs', [JobListingController::class, 'index'])->name('job.list');
+    Route::get('/jobs', [JobListingController::class, 'list'])->name('job.list');
+    Route::get('/jobs/saved', [JobListingController::class, 'savedJobs'])->name('job.saved');
+
+    Route::get('/jobs/{jobId}/apply', function ($jobId) {
+        $job = JobListing::findOrFail($jobId);
+
+        return Inertia::render('ApplyJob/ApplyJobPage', ['jobId' => $job->id]);
+    })->name('job.showApply');
+    Route::post('jobs/apply', [JobListingController::class, 'apply'])->name('job.apply');
+
     Route::post('/jobs/{id}/bookmark', [JobListingController::class, 'bookmark'])->name('job.bookmark');
     Route::delete('/jobs/{id}/bookmark', [JobListingController::class, 'unBookmark'])->name('job.unBookmark');
 });

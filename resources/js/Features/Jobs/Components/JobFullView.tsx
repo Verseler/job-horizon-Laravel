@@ -125,7 +125,9 @@ export default function JobFullView({
                 </div>
 
                 <SheetFooter className="fixed bottom-0 h-16 bg-white pt-2 dark:bg-neutral-900">
-                    <Link href={route('job.apply')}>
+                    <Link
+                        href={route('job.showApply', { jobId: job?.id ?? 0 })}
+                    >
                         <Button
                             size="lg"
                             className="w-[37rem] bg-green-600 font-semibold hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600"

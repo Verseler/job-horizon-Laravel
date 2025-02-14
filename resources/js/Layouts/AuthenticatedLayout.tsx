@@ -15,7 +15,7 @@ import { Bell } from 'lucide-react';
 import { PropsWithChildren, useState } from 'react';
 
 const jobSeekerNavLinks = [
-    { id: 1, label: 'Find Jobs', url: 'job.find', path: '/jobs/find' },
+    { id: 1, label: 'Find Jobs', url: 'job.list', path: '/jobs' },
     { id: 2, label: 'My Jobs', url: 'job.saved', path: '/jobs/saved' },
 ];
 
@@ -38,17 +38,19 @@ export default function AuthenticatedLayout({ children }: PropsWithChildren) {
     });
 
     return (
-        <div className="w-full min-h-screen bg-white dark:bg-neutral-900">
+        <div className="min-h-screen w-full bg-white dark:bg-neutral-900">
             <header className="border-b border-b-neutral-200 bg-slate-50 dark:bg-slate-900">
                 <CenterContainer className="flex items-center justify-between">
                     <Link
-                        href={route(user.role === 'recruiter' ? '' : 'job.find')}
+                        href={route(
+                            user.role === 'recruiter' ? '' : 'job.list',
+                        )}
                     >
                         <ApplicationLogo className="text-black" />
                     </Link>
 
                     <nav>
-                        <ul className="flex items-center h-12 text-sm font-semibold gap-x-6">
+                        <ul className="flex h-12 items-center gap-x-6 text-sm font-semibold">
                             {user.role === 'job_seeker' && navLinks}
                         </ul>
                     </nav>
