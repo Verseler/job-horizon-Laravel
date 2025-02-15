@@ -27,8 +27,8 @@ export default function ApplyJobPage({ jobId }: ApplyJobPageProps) {
         email: '',
         phone_number: '',
         address: '',
-        documents: [],
-        links: [],
+        documents: null,
+        links: null,
     });
 
     const stepOneHasError =

@@ -6,7 +6,7 @@ export type ApplyJobForm = {
     email: string,
     phone_number: string,
     address: string,
-    documents: Array<File>,
-    links: Array<{ label: string, value: string }>
+    documents?: Array<File> | null,
+    links?: Array<{ label: string, value: string }> | null
 }
 

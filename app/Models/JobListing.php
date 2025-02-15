@@ -35,8 +35,23 @@ class JobListing extends Model
         return $this->hasMany(JobApplication::class);
     }
 
+    public function appliedBy()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'job_applications',
+            'job_listing_id',
+            'job_seeker_id'
+        )->withTimestamps();
+    }
+
     public function bookmarkedBy()
     {
-        return $this->belongsToMany(User::class, 'job_bookmarks', 'job_listing_id', 'job_seeker_id')->withTimestamps();
+        return $this->belongsToMany(
+            User::class,
+            'job_bookmarks',
+            'job_listing_id',
+            'job_seeker_id'
+        )->withTimestamps();
     }
 }

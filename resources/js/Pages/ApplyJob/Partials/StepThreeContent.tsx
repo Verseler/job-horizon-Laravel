@@ -15,17 +15,16 @@ export default function StepThreeContent({
     prevStep,
     submit,
 }: StepThreeContentProps) {
-    console.log('links error: ', form.errors);
     function handleCreateField() {
         const newFieldValue = { label: '', value: '' };
-        const prevFieldValues = form.data.links;
+        const prevFieldValues = form.data.links ?? [];
         const updatedFieldValues = [...prevFieldValues, newFieldValue];
 
         form.setData('links', updatedFieldValues);
     }
 
     function handleDeleteField(index: number) {
-        const updatedFieldValues = [...form.data.links];
+        const updatedFieldValues = [...form.data.links ?? []];
         updatedFieldValues.splice(index, 1); //remove selected field
 
         form.setData('links', updatedFieldValues);
@@ -36,7 +35,7 @@ export default function StepThreeContent({
         index: number,
         type: 'label' | 'value',
     ) {
-        const updatedFieldValues = [...form.data.links];
+        const updatedFieldValues = [...form.data.links ?? []];
         updatedFieldValues[index][type] = value; //update selected field
 
         form.setData('links', updatedFieldValues);
@@ -56,7 +55,7 @@ export default function StepThreeContent({
             </p>
 
             <div className="my-6 min-h-60 max-w-[44rem] space-y-3">
-                {form.data.links.map((link, index) => (
+                {form.data.links?.map((link, index) => (
                     <ListField
                         key={index}
                         label={link.label}
@@ -96,7 +95,7 @@ export default function StepThreeContent({
             <div className="space-x-2">
                 <Button
                     variant="ghost"
-                    className="h-12 w-28 rounded-lg"
+                    className="h-12 rounded-lg w-28"
                     onClick={prevStep}
                 >
                     Back
@@ -104,7 +103,7 @@ export default function StepThreeContent({
                 <Button
                     disabled={form.processing}
                     onClick={submit}
-                    className="h-12 w-32 rounded-lg bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600"
+                    className="w-32 h-12 bg-green-600 rounded-lg hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600"
                 >
                     Submit
                 </Button>

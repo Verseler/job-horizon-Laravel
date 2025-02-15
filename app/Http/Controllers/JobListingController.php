@@ -80,7 +80,10 @@ class JobListingController extends Controller
     {
         $userId = Auth::id();
 
-        $appliedJobs = [];
+        $appliedJobs = JobListing::whereHas('appliedBy', function ($query) use ($userId) {
+            $query->where('job_seeker_id', $userId);
+        })->with(['appliedBy', 'jobApplications'])->get();
+
 
         $bookmarkedJobs = JobListing::whereHas('bookmarkedBy', function ($query) use ($userId) {
             $query->where('job_seeker_id', $userId);
@@ -161,7 +164,6 @@ class JobListingController extends Controller
         if ($existingApplication) {
             return back()->with('error', 'You have already applied for this job');
         }
-
 
         $jobApplication = JobApplication::create([
             'first_name' => $validatedFields['first_name'],

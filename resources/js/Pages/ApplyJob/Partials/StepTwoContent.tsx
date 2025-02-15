@@ -14,7 +14,6 @@ export default function StepTwoContent({
     nextStep,
     prevStep,
 }: StepTwoContentProps) {
-    console.log('documents error: ', form.errors.documents);
     return (
         <div>
             <h1 className="mb-4 text-3xl font-bold text-neutral-700">
@@ -27,19 +26,19 @@ export default function StepTwoContent({
                 RESUME / CV / Cover Letter
             </p>
             <div className="my-6 w-[36rem] space-y-3">
-                <Uploader files={form.data.documents} setFiles={form.setData} />
+                <Uploader files={form.data.documents ?? []} setFiles={form.setData} />
             </div>
             <div className="space-x-2">
                 <Button
                     variant="ghost"
-                    className="h-12 w-28 rounded-lg"
+                    className="h-12 rounded-lg w-28"
                     onClick={prevStep}
                 >
                     Back
                 </Button>
                 <Button
                     onClick={nextStep}
-                    className="h-12 w-32 rounded-lg bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600"
+                    className="w-32 h-12 bg-green-600 rounded-lg hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600"
                 >
                     Next Step
                 </Button>

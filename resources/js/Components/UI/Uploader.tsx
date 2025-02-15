@@ -69,9 +69,9 @@ export default function Uploader({ files, setFiles }: UploaderProps) {
                 onDrop={handleDrop}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
-                className="isolate flex h-60 w-full cursor-pointer flex-col items-center justify-center gap-y-1 rounded-lg border-2 border-dashed border-neutral-300 transition-all hover:border-neutral-400"
+                className="flex flex-col items-center justify-center w-full transition-all border-2 border-dashed rounded-lg cursor-pointer isolate h-60 gap-y-1 border-neutral-300 hover:border-neutral-400"
             >
-                <FileUp className="mb-2 size-8 text-green-600" />
+                <FileUp className="mb-2 text-green-600 size-8" />
                 <p>Drag and drop to upload the file</p>
                 <p>or</p>
                 <label
@@ -86,7 +86,7 @@ export default function Uploader({ files, setFiles }: UploaderProps) {
                         id="file-input-field"
                         type="file"
                         accept="image/*,.doc,.docx,.pdf"
-                        className="file-input-field sr-only"
+                        className="sr-only file-input-field"
                         multiple
                         onChange={handleOnChange}
                     />
@@ -112,12 +112,12 @@ type FilePreviewItemProps = {
 
 function FilePreviewItem({ name, onClickDelete }: FilePreviewItemProps) {
     return (
-        <div className="flex h-10 w-full items-center justify-between rounded-md border border-neutral-200 px-2">
+        <div className="flex items-center justify-between w-full h-10 px-2 border rounded-md border-neutral-200">
             <div className="flex items-center gap-x-2">
-                <div className="max-w-max rounded-full bg-green-100 p-2">
-                    <File className="size-3 text-green-600" />
+                <div className="p-2 bg-green-100 rounded-full max-w-max">
+                    <File className="text-green-600 size-3" />
                 </div>
-                <p className="line-clamp-1 text-sm">{name}</p>
+                <p className="text-sm line-clamp-1">{name}</p>
             </div>
             <Button
                 onClick={onClickDelete}
