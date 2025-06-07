@@ -1,12 +1,12 @@
-import CenterContainer from '@/Components/UI/CenterContainer';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/Components/UI/Tabs';
-import JobCards from '@/Features/Jobs/Components/JobCards';
-import JobFullView from '@/Features/Jobs/Components/JobFullView';
-import JobSearchBox from '@/Features/Jobs/Components/JobSearchBox';
-import { Job } from '@/Features/Jobs/job.types';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { mergeUnique } from '@/Lib/utils';
-import { useMemo, useState } from 'react';
+import CenterContainer from "@/Components/UI/CenterContainer";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/Components/UI/Tabs";
+import JobCards from "@/Features/Jobs/Components/JobCards";
+import JobFullView from "@/Features/Jobs/Components/JobFullView";
+import JobSearchBox from "@/Features/Jobs/Components/JobSearchBox";
+import { Job } from "@/Features/Jobs/job.types";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { mergeUnique } from "@/Lib/utils";
+import { useMemo, useState } from "react";
 
 type MyJobsPageProps = {
     appliedJobs: Array<Job> | null;
@@ -17,7 +17,7 @@ export default function MyJobsPage({
     appliedJobs,
     bookmarkedJobs,
 }: MyJobsPageProps) {
-    const [selectedJobId, setSelectedJobId] = useState<Job['id'] | null>(null);
+    const [selectedJobId, setSelectedJobId] = useState<Job["id"] | null>(null);
     const mergedJobs = mergeUnique(appliedJobs ?? [], bookmarkedJobs ?? []);
     const selectedJob = useMemo(
         () => mergedJobs?.find((job) => job.id === selectedJobId),

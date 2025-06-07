@@ -1,22 +1,23 @@
-import CenterContainer from '@/Components/UI/CenterContainer';
-import JobCards from '@/Features/Jobs/Components/JobCards';
-import JobFilterControls from '@/Features/Jobs/Components/JobFilterControls';
-import JobFullView from '@/Features/Jobs/Components/JobFullView';
-import JobSearchBox from '@/Features/Jobs/Components/JobSearchBox';
-import { Job } from '@/Features/Jobs/job.types';
-import { useToast } from '@/hooks/use-toast';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { usePage } from '@inertiajs/react';
-import { useEffect, useMemo, useState } from 'react';
+import CenterContainer from "@/Components/UI/CenterContainer";
+import JobCards from "@/Features/Jobs/Components/JobCards";
+import JobFilterControls from "@/Features/Jobs/Components/JobFilterControls";
+import JobFullView from "@/Features/Jobs/Components/JobFullView";
+import JobSearchBox from "@/Features/Jobs/Components/JobSearchBox";
+import { Job } from "@/Features/Jobs/job.types";
+import { useToast } from "@/hooks/use-toast";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { SharedData } from "@/types";
+import { usePage } from "@inertiajs/react";
+import { useEffect, useMemo, useState } from "react";
 
 type FindJobsPageProps = {
     jobs: Array<Job> | null;
 };
 
 export default function FindJobsPage({ jobs }: FindJobsPageProps) {
-    const { flash } = usePage().props;
+    const page = usePage<SharedData>();
     const { toast } = useToast();
-    const [selectedJobId, setSelectedJobId] = useState<Job['id'] | null>(null);
+    const [selectedJobId, setSelectedJobId] = useState<Job["id"] | null>(null);
     const selectedJob = useMemo(
         () => jobs?.find((job) => job.id === selectedJobId),
         [jobs, selectedJobId],
@@ -24,16 +25,14 @@ export default function FindJobsPage({ jobs }: FindJobsPageProps) {
 
     const clearSelectedJobId = () => setSelectedJobId(null);
 
-    console.log(flash);
-
     //display flash success message using toast
     useEffect(() => {
-        if (flash.success) {
+        if (page.props.flash.success) {
             toast({
-                title: flash.success,
+                title: page.props.flash.success,
             });
         }
-    }, [flash.success]);
+    }, [page.props.flash.success]);
 
     return (
         <AuthenticatedLayout>
@@ -49,7 +48,6 @@ export default function FindJobsPage({ jobs }: FindJobsPageProps) {
                         </p>
                     </CenterContainer>
                 </section>
-
                 <section className="py-4">
                     <CenterContainer className="flex items-start gap-3">
                         <JobFilterControls />
